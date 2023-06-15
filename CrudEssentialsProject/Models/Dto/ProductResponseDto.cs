@@ -1,6 +1,6 @@
 ﻿namespace CrudEssentialsProject.Models.Dto
 {
-    public class ProductResponse
+    public class ProductResponseDto
     {
         public Guid Guid { get; set; }
         public string? Name { get; set; }
@@ -11,9 +11,9 @@
 
     public static class ProductExtensions
     {
-        public static ProductResponse ToProductResponse(this Product product)
+        public static ProductResponseDto ToProductResponse(this Product product)
         {
-            ProductResponse productResponse = new ProductResponse()
+            ProductResponseDto productResponse = new ProductResponseDto()
             {
                 Guid = product.Guid,
                 Name = product.Name,

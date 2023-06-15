@@ -24,7 +24,7 @@ namespace CrudEssentialsProject.Controllers
         }
 
         [HttpPost("/product")]
-        public async Task<IActionResult> AddNewProduct([FromBody] ProductRequest productRequest)
+        public async Task<IActionResult> AddNewProduct([FromBody] ProductRequestDto productRequest)
         {
             if (!ModelState.IsValid)
             {

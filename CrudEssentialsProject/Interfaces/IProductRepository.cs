@@ -5,8 +5,8 @@ namespace CrudEssentialsProject.Interfaces
 {
     public interface IProductRepository
     {
-        Task<IList<ProductResponse>> GetAll();
-        Task<ProductResponse?> GetByName(string name);
-        Task<ProductResponse> Create([FromBody] ProductRequest productRequest);
+        Task<IList<ProductResponseDto>> GetAll();
+        Task<ProductResponseDto?> GetByName(string name);
+        Task<ProductResponseDto> Create([FromBody] ProductRequestDto productRequest);
     }
 }

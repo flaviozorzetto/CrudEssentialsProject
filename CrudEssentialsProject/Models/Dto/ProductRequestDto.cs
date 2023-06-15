@@ -2,7 +2,7 @@
 
 namespace CrudEssentialsProject.Models.Dto
 {
-    public class ProductRequest
+    public class ProductRequestDto
     {
         [Required]
         public string? Name { get; set; }

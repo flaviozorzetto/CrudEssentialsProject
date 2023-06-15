@@ -15,7 +15,7 @@ namespace CrudEssentialsProject.Repositories
             _dapperContext = dapperContext;
         }
 
-        public async Task<ProductResponse> Create(ProductRequest productRequest)
+        public async Task<ProductResponseDto> Create(ProductRequestDto productRequest)
         {
             using var connection = _dapperContext.GetConnection();
 
@@ -39,7 +39,7 @@ namespace CrudEssentialsProject.Repositories
             return product.First().ToProductResponse();
         }
 
-        public async Task<IList<ProductResponse>> GetAll()
+        public async Task<IList<ProductResponseDto>> GetAll()
         {
             using var connection = _dapperContext.GetConnection();
 
@@ -50,7 +50,7 @@ namespace CrudEssentialsProject.Repositories
             return products.Select(product => product.ToProductResponse()).ToList();
         }
 
-        public async Task<ProductResponse?> GetByName(string name)
+        public async Task<ProductResponseDto?> GetByName(string name)
         {
             using var connection = _dapperContext.GetConnection();
 
