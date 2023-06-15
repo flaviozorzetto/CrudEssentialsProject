@@ -12,7 +12,7 @@ namespace CrudEssentialsProject.Context
             _connectionString = configuration.GetConnectionString("DatabaseConnection");
         }
 
-        public IDbConnection getConnection()
+        public IDbConnection GetConnection()
         {
             return new MySqlConnection(_connectionString);
         }

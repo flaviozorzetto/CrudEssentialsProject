@@ -1,7 +1,7 @@
 ﻿using CrudEssentialsProject.Interfaces;
 using CrudEssentialsProject.Models.Dto;
+using CrudEssentialsProject.Services.Enums;
 using Microsoft.AspNetCore.Mvc;
-using MySqlConnector;
 
 namespace CrudEssentialsProject.Controllers
 {
@@ -21,12 +21,12 @@ namespace CrudEssentialsProject.Controllers
         {
             var products = await _productService.GetAllProducts();
 
-            return Ok(products);
+            return Ok(products.Message);
         }
 
         [HttpPost]
         [Route("/product")]
-        public async Task<IActionResult> addNewProduct([FromBody] ProductRequest productRequest)
+        public async Task<IActionResult> AddNewProduct([FromBody] ProductRequest productRequest)
         {
             if (!ModelState.IsValid)
             {
@@ -34,30 +34,29 @@ namespace CrudEssentialsProject.Controllers
 
                 return BadRequest(errorMessageList);
             }
-            try
-            {
-                var product = await _productService.AddNewProduct(productRequest);
 
-                return Ok(product);
-            }
-            catch (MySqlException ex)
+            var serviceResponse = await _productService.AddNewProduct(productRequest);
+
+            if (serviceResponse.Status == ServiceResponseStatus.BAD_REQUEST)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(serviceResponse.Message);
             }
+
+            return Ok(serviceResponse.Message);
         }
 
         [HttpGet]
         [Route("/product/{name}")]
-        public async Task<IActionResult> queryProductByName([FromRoute] string name)
+        public async Task<IActionResult> QueryProductByName([FromRoute] string name)
         {
-            var product = await _productService.GetProductByName(name);
+            var serviceResponse = await _productService.GetProductByName(name);
 
-            if (product == null)
+            if (serviceResponse.Status == ServiceResponseStatus.NOT_FOUND)
             {
-                return NotFound("Product not found");
+                return NotFound(serviceResponse.Message);
             }
 
-            return Ok(product);
+            return Ok(serviceResponse.Message);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using CrudEssentialsProject.Interfaces;
 using CrudEssentialsProject.Models.Dto;
+using CrudEssentialsProject.Services.Enums;
+using MySqlConnector;
 
 namespace CrudEssentialsProject.Services
 {
@@ -11,19 +13,34 @@ namespace CrudEssentialsProject.Services
         {
             _productRepository = productRepository;
         }
-        public async Task<ProductResponse> AddNewProduct(ProductRequest productRequest)
+        public async Task<ServiceResponse> AddNewProduct(ProductRequest productRequest)
         {
-            return await _productRepository.Create(productRequest);
+            try
+            {
+                var product = await _productRepository.Create(productRequest);
+                return new ServiceResponse() { Message = product, Status = ServiceResponseStatus.SUCCESS };
+            }
+            catch (MySqlException ex)
+            {
+                return new ServiceResponse() { Message = ex.Message, Status = ServiceResponseStatus.BAD_REQUEST };
+            }
         }
 
-        public async Task<IList<ProductResponse>> GetAllProducts()
+        public async Task<ServiceResponse> GetAllProducts()
         {
-            return await _productRepository.GetAll();
+            var products = await _productRepository.GetAll();
+            return new ServiceResponse() { Message = products, Status = ServiceResponseStatus.SUCCESS };
         }
 
-        public async Task<ProductResponse?> GetProductByName(string name)
+        public async Task<ServiceResponse> GetProductByName(string name)
         {
-            return await _productRepository.GetByName(name);
+            var product = await _productRepository.GetByName(name);
+
+            if (product == null)
+            {
+                return new ServiceResponse() { Message = "Product not found", Status = ServiceResponseStatus.NOT_FOUND };
+            }
+            return new ServiceResponse() { Message = product, Status = ServiceResponseStatus.SUCCESS };
         }
     }
 }

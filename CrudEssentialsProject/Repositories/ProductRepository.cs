@@ -17,7 +17,7 @@ namespace CrudEssentialsProject.Repositories
 
         public async Task<ProductResponse> Create(ProductRequest productRequest)
         {
-            using var connection = _dapperContext.getConnection();
+            using var connection = _dapperContext.GetConnection();
 
             var sql = "INSERT INTO PRODUCT VALUES (@guid, @name, @description, @price, @quantity)";
 
@@ -41,7 +41,7 @@ namespace CrudEssentialsProject.Repositories
 
         public async Task<IList<ProductResponse>> GetAll()
         {
-            using var connection = _dapperContext.getConnection();
+            using var connection = _dapperContext.GetConnection();
 
             var sql = "SELECT * FROM PRODUCT";
 
@@ -52,7 +52,7 @@ namespace CrudEssentialsProject.Repositories
 
         public async Task<ProductResponse?> GetByName(string name)
         {
-            using var connection = _dapperContext.getConnection();
+            using var connection = _dapperContext.GetConnection();
 
             var sql = "SELECT * FROM PRODUCT WHERE Name = @name";
 
