@@ -1,55 +1,29 @@
 ﻿using CrudEssentialsProject.Interfaces;
-using CrudEssentialsProject.Models;
 using CrudEssentialsProject.Models.Dto;
 
 namespace CrudEssentialsProject.Services
 {
     public class ProductService : IProductService
     {
-        IList<Product> products = new List<Product>();
+        private readonly IProductRepository _productRepository;
 
-        public ProductResponse addNewProduct(ProductRequest productRequest)
+        public ProductService(IProductRepository productRepository)
         {
-            var product = new Product()
-            {
-                Guid = Guid.NewGuid(),
-                Description = productRequest.Description,
-                Name = productRequest.Name,
-                Price = productRequest.Price,
-                Quantity = productRequest.Quantity,
-            };
-
-            products.Add(product);
-
-            return product.ToProductResponse();
+            _productRepository = productRepository;
+        }
+        public async Task<ProductResponse> AddNewProduct(ProductRequest productRequest)
+        {
+            return await _productRepository.Create(productRequest);
         }
 
-        public List<ProductResponse> getAllProducts()
+        public async Task<IList<ProductResponse>> GetAllProducts()
         {
-            return products.Select(product => product.ToProductResponse()).ToList();
+            return await _productRepository.GetAll();
         }
 
-        public ProductResponse? getProductByName(string name)
+        public async Task<ProductResponse?> GetProductByName(string name)
         {
-            var product = products.FirstOrDefault(product =>
-            {
-                if (product.Name == null)
-                {
-                    return false;
-                }
-                if (product.Name.ToUpper().Equals(name.ToUpper()))
-                {
-                    return true;
-                }
-                return false;
-            });
-
-            if (product == null)
-            {
-                return null;
-            }
-
-            return product.ToProductResponse();
+            return await _productRepository.GetByName(name);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CrudEssentialsProject.Interfaces;
 using CrudEssentialsProject.Models.Dto;
 using Microsoft.AspNetCore.Mvc;
+using MySqlConnector;
 
 namespace CrudEssentialsProject.Controllers
 {
@@ -14,37 +15,48 @@ namespace CrudEssentialsProject.Controllers
         }
 
         [HttpGet]
-        [Route("/product")]
         [Route("/")]
-        public IActionResult Index()
+        [Route("/product")]
+        public async Task<IActionResult> Index()
         {
-            var products = _productService.getAllProducts();
+            var products = await _productService.GetAllProducts();
 
             return Ok(products);
         }
 
         [HttpPost]
         [Route("/product")]
-        public IActionResult addNewProduct([FromBody] ProductRequest productRequest)
+        public async Task<IActionResult> addNewProduct([FromBody] ProductRequest productRequest)
         {
             if (!ModelState.IsValid)
             {
                 var errorMessageList = ModelState.Values.SelectMany(value => value.Errors).Select(error => error.ErrorMessage);
+
                 return BadRequest(errorMessageList);
             }
-            var product = _productService.addNewProduct(productRequest);
-            return Ok(product);
+            try
+            {
+                var product = await _productService.AddNewProduct(productRequest);
+
+                return Ok(product);
+            }
+            catch (MySqlException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet]
         [Route("/product/{name}")]
-        public IActionResult queryProductByName([FromRoute] string name)
+        public async Task<IActionResult> queryProductByName([FromRoute] string name)
         {
-            var product = _productService.getProductByName(name);
+            var product = await _productService.GetProductByName(name);
+
             if (product == null)
             {
                 return NotFound("Product not found");
             }
+
             return Ok(product);
         }
     }
