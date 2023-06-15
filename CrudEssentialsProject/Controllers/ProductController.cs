@@ -37,7 +37,7 @@ namespace CrudEssentialsProject.Controllers
 
             if (serviceResponse.Status == ServiceResponseStatus.BAD_REQUEST)
             {
-                return BadRequest(serviceResponse.Message);
+                return BadRequest(serviceResponse.ErrorMessage);
             }
 
             return Ok(serviceResponse.Message);
@@ -50,7 +50,7 @@ namespace CrudEssentialsProject.Controllers
 
             if (serviceResponse.Status == ServiceResponseStatus.NOT_FOUND)
             {
-                return NotFound(serviceResponse.Message);
+                return NotFound(serviceResponse.ErrorMessage);
             }
 
             return Ok(serviceResponse.Message);

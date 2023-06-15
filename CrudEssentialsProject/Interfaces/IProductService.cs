@@ -4,8 +4,8 @@ namespace CrudEssentialsProject.Interfaces
 {
     public interface IProductService
     {
-        Task<ServiceResponse> GetAllProducts();
-        Task<ServiceResponse> AddNewProduct(ProductRequest productRequest);
-        Task<ServiceResponse> GetProductByName(string name);
+        Task<ServiceResponse<IList<ProductResponse>>> GetAllProducts();
+        Task<ServiceResponse<ProductResponse>> AddNewProduct(ProductRequest productRequest);
+        Task<ServiceResponse<ProductResponse>> GetProductByName(string name);
     }
 }

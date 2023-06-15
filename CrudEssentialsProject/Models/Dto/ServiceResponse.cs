@@ -2,9 +2,10 @@
 
 namespace CrudEssentialsProject.Models.Dto
 {
-    public class ServiceResponse
+    public class ServiceResponse<T>
     {
         public ServiceResponseStatus Status { get; set; }
-        public object? Message { get; set; }
+        public T? Message { get; set; }
+        public string? ErrorMessage { get; set; }
     }
 }
