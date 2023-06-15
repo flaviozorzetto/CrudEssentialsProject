@@ -14,18 +14,16 @@ namespace CrudEssentialsProject.Controllers
             _productService = productService;
         }
 
-        [HttpGet]
-        [Route("/")]
-        [Route("/product")]
+        [HttpGet("/")]
+        [HttpGet("/product")]
         public async Task<IActionResult> Index()
         {
-            var products = await _productService.GetAllProducts();
+            var serviceResponse = await _productService.GetAllProducts();
 
-            return Ok(products.Message);
+            return Ok(serviceResponse.Message);
         }
 
-        [HttpPost]
-        [Route("/product")]
+        [HttpPost("/product")]
         public async Task<IActionResult> AddNewProduct([FromBody] ProductRequest productRequest)
         {
             if (!ModelState.IsValid)
@@ -45,8 +43,7 @@ namespace CrudEssentialsProject.Controllers
             return Ok(serviceResponse.Message);
         }
 
-        [HttpGet]
-        [Route("/product/{name}")]
+        [HttpGet("/product/{name}")]
         public async Task<IActionResult> QueryProductByName([FromRoute] string name)
         {
             var serviceResponse = await _productService.GetProductByName(name);
